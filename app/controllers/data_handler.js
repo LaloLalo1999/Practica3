@@ -12,10 +12,10 @@ let products = [];
 let productsJSON = JSON.parse(content);
 
 for (let product of productsJSON) {
-  if (product.uuid === undefined) {
+  if (product._uuid === undefined) {
     products.push(Product.createFromObject(product));
   } else {
-    products.push(Product.createFromObject(product, product.uuid));
+    products.push(Product.createFromObject(product, product._uuid));
   }
 }
 
@@ -88,11 +88,11 @@ exports.updateProduct = updateProduct;
 exports.deleteProduct = deleteProduct;
 exports.findProduct = findProduct;
 
-// module.exports = {
-//   getProducts,
-//   getProductById,
-//   createProduct,
-//   updateProduct,
-//   deleteProduct,
-//   findProduct
-// }
+module.exports = {
+  getProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  findProduct
+}
