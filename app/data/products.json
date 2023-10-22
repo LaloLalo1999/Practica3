@@ -1,0 +1,29 @@
+[  
+  {
+    "title": "Product 1",
+    "description": "Product 1 description",
+    "imageUrl": "https://example.com/image1.jpg",
+    "unit": "kg",
+    "stock": 10,
+    "pricePerUnit": 5,
+    "category": "Category 1"
+  },
+  {
+    "title": "Product 2",
+    "description": "Product 2 description",
+    "imageUrl": "https://example.com/image2.jpg",
+    "unit": "kg", 
+    "stock": 15,
+    "pricePerUnit": 7,
+    "category": "Category 2"
+  },
+  {
+    "title": "Product 3",
+    "description": "Product 3 description",
+    "imageUrl": "https://example.com/image3.jpg",
+    "unit": "kg",
+    "stock": 20,
+    "pricePerUnit": 10,
+    "category": "Category 3"
+  }
+]
