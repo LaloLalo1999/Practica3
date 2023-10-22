@@ -6,7 +6,20 @@ const Product = require('./product');
 // Leer el contenido de users.json
 // Parsear y convertir a User el contenido de products.json
 let content = fs.readFileSync('./app/data/products.json');
-let products = JSON.parse(content).map(Product.createFromObject);
+
+// let products = JSON.parse(content).map(Product.createFromObject);
+let products = [];
+let productsJSON = JSON.parse(content);
+
+for (let product of productsJSON) {
+  if (product.uuid === undefined) {
+    products.push(Product.createFromObject(product));
+  } else {
+    products.push(Product.createFromObject(product, product.uuid));
+  }
+}
+
+
 
 function getProducts() {
   return products;
@@ -20,7 +33,16 @@ function createProduct(product) {
   if (typeof product !== "object") {
     throw new ProductException("Product must be an object.");
   }
-  products.push(Product.createFromObject(product));
+  if (product.uuid) {
+    if (getProductById(product.uuid)) {
+      throw new ProductException("Product already exists.");
+    } else {
+      uuid = product.uuid;
+    }
+    
+  }
+  products.push(Product.createFromObject(product, uuid));
+  fs.writeFileSync('./app/data/products.json', JSON.stringify(products));
 }
 
 function updateProduct(uuid, updatedProduct) {
@@ -30,6 +52,7 @@ function updateProduct(uuid, updatedProduct) {
   }
 
   products[productIndex] = Product.createFromObject(updatedProduct);
+  fs.writeFileSync('./app/data/products.json', JSON.stringify(products));
 }
 
 function deleteProduct(uuid) {
@@ -38,6 +61,7 @@ function deleteProduct(uuid) {
     throw new ProductException("Product not found.");
   }
   products.splice(productIndex, 1);
+  fs.writeFileSync('./app/data/products.json', JSON.stringify(products));
 }
 
 function findProduct(query) {
@@ -64,11 +88,11 @@ exports.updateProduct = updateProduct;
 exports.deleteProduct = deleteProduct;
 exports.findProduct = findProduct;
 
-module.exports = {
-  getProducts,
-  getProductById,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-  findProduct
-}
+// module.exports = {
+//   getProducts,
+//   getProductById,
+//   createProduct,
+//   updateProduct,
+//   deleteProduct,
+//   findProduct
+// }

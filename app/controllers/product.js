@@ -136,7 +136,7 @@ class Product {
 
   // cleanObject(obj): Esta función debe limpiar el objeto recibido de todos aquellosvalores que no pertenezcan a la clase Product
   static cleanObject(obj) {
-    const productProperties = ["title", "description", "imageUrl", "unit", "stock", "pricePerUnit", "category"];
+    const productProperties = ["uuid", "title", "description", "imageUrl", "unit", "stock", "pricePerUnit", "category"];
     for (let prop in obj) {
       // if prop in productProperties continue, else delete
       if (!productProperties.includes(prop)) {

@@ -37,16 +37,24 @@ router.route('/cart')
     for (let proxy of proxies) {
       let product = dataHandler.getProductById(proxy.Uuid);
       if (product === undefined) {
-        res.status(400).send("Product not found.");
+        res.status(404).send("Product not found.");
       }
       products.push(product);
     }
     res.json(products)
   })
 
+// If the ID is invalid, return a 404 error status message explaining why.
+// If the ID is valid, return a 200 success status message and the product corresponding to the ID. Add the response to the corresponging JSON header.
 router.route('/:id')
   .get((req, res) => {
-    
+    let uuid = req.params.id;
+    let product = dataHandler.getProductById(uuid);
+    if (product === undefined) {
+      res.status(404).send("Product not found.");
+    }else {
+      res.status(200).json(product);
+    }
   })
 
 module.exports = router;
