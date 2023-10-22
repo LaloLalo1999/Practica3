@@ -35,10 +35,10 @@ class ShoppingCart {
     }
     // array -> for and create
     for (let item in value) {
-      this.products.push(Product.createFromObject(item));
+      this._products.push(Product.createFromObject(item));
     }
     //if single element -> create
-    this.products.push(Product.createFromObject(value));
+    this._products.push(Product.createFromObject(value));
   }
 
   get productProxies() {
