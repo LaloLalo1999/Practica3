@@ -1,14 +1,12 @@
 "use strict";
 
-const dataHandler = require("./../controllers/data_handler");
-
 class ShoppingCartException {
   constructor(errorMessage) {
     this.errorMessage = errorMessage;
   }
 }
 
-class CartItem {
+class ProductProxy {
   constructor(productUuid, amount) {
     this.productUuid = productUuid;
     this.amount = amount;
@@ -17,16 +15,16 @@ class CartItem {
 
 class ShoppingCart {
   constructor() {
-    this.actualProducts = [];
-    this.cartItems = [];
+    this.products = [];
+    this.productProxies = [];
   }
 
   get products() {
-    return this._actualProducts;
+    return this._products;
   }
 
   set products(value) {
-    this._actualProducts = [];
+    this._products = [];
     // empty array -> create
     if (value.length === 0) {
       return;
@@ -37,19 +35,19 @@ class ShoppingCart {
     }
     // array -> for and create
     for (let item in value) {
-      this._actualProducts.push(Product.createFromObject(item));
+      this._products.push(Product.createFromObject(item));
     }
     //if single element -> create
-    this._actualProducts.push(Product.createFromObject(value));
+    this._products.push(Product.createFromObject(value));
   }
 
-  get cartItems() {
-    return this._cartItems;
+  get productProxies() {
+    return this._productProxies;
   }
 
-  set cartItems(value) {
+  set productProxies(value) {
     if (Array.isArray(value) && value.length === 0) {
-      this._cartItems = [];
+      this._productProxies = [];
       return;
     }
     throw new ShoppingCartException("Cannot modify directly, use correct methods.");
@@ -66,10 +64,10 @@ class ShoppingCart {
       throw new ShoppingCartException("Amount must be a positive whole number.");
     }
 
-    const existingProductIndex = this.cartItems.findIndex((product) => product.productUuid === productUuid);
+    const existingProductIndex = this.productProxies.findIndex((product) => product.productUuid === productUuid);
     
     // Find the actual product object by its UUID
-    const actualProduct = dataHandler.getProductById(productUuid);
+    const actualProduct = getProductById(productUuid);
     if (!actualProduct) {
       throw new ShoppingCartException("Product not found.");
     }
@@ -79,11 +77,11 @@ class ShoppingCart {
 
     if (existingProductIndex !== -1) {
       // if exists, add amount to existing item
-      this.cartItems[existingProductIndex].amount += amount;
+      this.productProxies[existingProductIndex].amount += amount;
     } else {
       // if doesn't exist, add new item
-      this.cartItems.push(new CartItem(productUuid, amount));
-      this._actualProducts.push(productCopy);  // Add a copy of the actual product
+      this.productProxies.push(new ProductProxy(productUuid, amount));
+      this._products.push(productCopy);  // Add a copy of the actual product
     }
   }
 
@@ -102,33 +100,33 @@ class ShoppingCart {
     if (newAmount == 0) this.removeItem(productUuid);
 
     // find -> update existing or throw error if not found
-    const productIndex = this.cartItems.findIndex(
+    const productIndex = this.productProxies.findIndex(
       (product) => product.productUuid === productUuid
     );
     if (productIndex === -1) {
       throw new ShoppingCartException("Product not found.");
     } else {
-      this.cartItems[productIndex].amount = newAmount;
+      this.productProxies[productIndex].amount = newAmount;
     }
   }
 
   removeItem(productUuid) {
     // find -> remove existing or throw error if not found
-    const cartItemIndex = this.cartItems.findIndex(
+    const productProxyIndex = this.productProxies.findIndex(
       (product) => product.productUuid === productUuid
     );
-    if (cartItemIndex === -1) {
+    if (productProxyIndex === -1) {
       throw new ShoppingCartException("Product not found.");
     } else {
-      this.cartItems.splice(cartItemIndex, 1);
+      this.productProxies.splice(productProxyIndex, 1);
     }
 
     // Remove the corresponding product copy from _products array
-    const productIndex = this._actualProducts.findIndex(
+    const productIndex = this._products.findIndex(
       (product) => product.uuid === productUuid
     );
     if (productIndex !== -1) {
-      this._actualProducts.splice(productIndex, 1);
+      this._products.splice(productIndex, 1);
     }
   }
 
@@ -136,7 +134,7 @@ class ShoppingCart {
     let total = 0;
     // for products / proxies -> total += product.pricePerUnit * amount
     for (let i = 0; i < this.products.length; i++) {
-      total += this.products[i].pricePerUnit * this.cartItems[i].amount;
+      total += this.products[i].pricePerUnit * this.productProxies[i].amount;
     }
     return total;
   }
