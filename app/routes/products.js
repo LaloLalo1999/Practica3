@@ -14,7 +14,7 @@ router.route('/')
         products = dataHandler.getProducts();
         res.json(products);
       } catch (e) {
-        res.status(400).send("Error: " + e.errorMessage);
+        res.status(400).send("Error " + e);
       }
     } else {
       products = dataHandler.findProduct(query);

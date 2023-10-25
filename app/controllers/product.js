@@ -143,7 +143,7 @@ class Product {
     const productProperties = ["uuid", "title", "description", "imageUrl", "unit", "stock", "pricePerUnit", "category"];
     for (let prop in obj) {
       // if prop in productProperties continue, else delete
-      if (!productProperties.includes(prop)) {
+      if (!productProperties.includes(prop) && !productProperties.includes(prop.slice(1))) {
         delete obj[prop];
       }
     }

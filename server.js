@@ -1,14 +1,10 @@
 "use strict";
 
-const fs = require("fs");
 const express = require("express");
-const router = require("./app/controllers/router")
-const Product = require("./app/controllers/product");
-const data_handler = require("./app/controllers/data_handler");
+const router = require("./app/controllers/router");
 
 const app = express();
 const port = 3000;
-console.table(Product)
 
 app.use(express.json());
 app.use(router);
