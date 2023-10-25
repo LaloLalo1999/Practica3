@@ -1,5 +1,32 @@
 [
-  {"_uuid":"55f72be8-6a2d-4534-a135-9d19e3412dcf","_title":"Product 1","_description":"Product 1 description","_imageUrl":"https://example.com/image1.jpg","_unit":"kg","_stock":10,"_pricePerUnit":5,"_category":"Category 1"},
-  {"_uuid":"1080788b-a008-4b44-b823-db001a4fdcf1","_title":"Product 2","_description":"Product 2 description","_imageUrl":"https://example.com/image2.jpg","_unit":"kg","_stock":15,"_pricePerUnit":7,"_category":"Category 2"},
-  {"_uuid":"f8eed0fa-1d2e-4fed-872b-54c8efdec641","_title":"Product 3","_description":"Product 3 description","_imageUrl":"https://example.com/image3.jpg","_unit":"kg","_stock":20,"_pricePerUnit":10,"_category":"Category 3"}
+  {
+    "uuid": "8a20bbf5-a654-4963-a0d4-ecbb7d420160",
+    "title": "Product 1",
+    "description": "Product 1 description",
+    "imageUrl": "https://example.com/image1.jpg",
+    "unit": "kg",
+    "stock": 10,
+    "pricePerUnit": 5,
+    "category": "Category 1"
+  },
+  {
+    "uuid": "57e2fd97-9cdb-4595-8939-27af2a46faef",
+    "title": "Product 2",
+    "description": "Product 2 description",
+    "imageUrl": "https://example.com/image2.jpg",
+    "unit": "kg",
+    "stock": 15,
+    "pricePerUnit": 7,
+    "category": "Category 2"
+  },
+  {
+    "uuid": "b5c24be8-abca-418e-b440-d1faed35b964",
+    "title": "Product Y",
+    "description": "Product X description",
+    "imageUrl": "https://example.com/imag.jpg",
+    "unit": "g",
+    "stock": 1,
+    "pricePerUnit": 12,
+    "category": "Category X"
+  }
 ]
