@@ -5,8 +5,6 @@ const router = express.Router();
 const dataHandler = require('./../controllers/data_handler');
 
 // Get all products loaded on the products array if no filter is provided.
-// Get the product loaded on the products array if a filter is provided.
-// query is a string formatted as "<category>:<title>". If the user only enters a category, return all products in that category. If the user only enters a title, return all products with that title. If the user enters both a category and a title, return all products in that category with that title.
 router.route('/')
   .get((req, res) => {
     let query = req.query.filter;
@@ -16,7 +14,7 @@ router.route('/')
         products = dataHandler.getProducts();
         res.json(products);
       } catch (e) {
-        res.status(400).send("Error: " + e);
+        res.status(400).send("Error: " + e.errorMessage);
       }
     } else {
       products = dataHandler.findProduct(query);

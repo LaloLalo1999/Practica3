@@ -12,14 +12,30 @@ let products = [];
 let productsJSON = JSON.parse(content);
 
 for (let product of productsJSON) {
-  if (product.uuid === undefined) {
+  if (product.uuid === undefined || product.uuid === "") {
     products.push(Product.createFromObject(product));
   } else {
-    products.push(Product.createFromObject(product, product.uuid));
+    try {
+      products.push(Product.createFromObject(product, product.uuid));
+    } catch (e) {
+      console.log(e.errorMessage);
+    }
   }
 }
 
+storeProductsJson(products);
 
+function storeProductsJson(products) {
+  newProducts = []
+  for (let product of products) {
+    const newProduct = Object.entries(product).reduce((product, [key, value]) => {
+      product[key.substring(1)] = value;
+      return product;
+    }, {});
+    newProducts.push(newProduct);
+  }
+  fs.writeFileSync('./app/data/products.json', JSON.stringify(newProducts, null, 2));
+}
 
 function getProducts() {
   return products;
@@ -41,8 +57,8 @@ function createProduct(product) {
     }
     
   }
-  products.push(Product.createFromObject(product, uuid));
-  fs.writeFileSync('./app/data/products.json', JSON.stringify(products));
+  products.push(Product.createFromObject(product));
+  storeProductsJson(products);
 }
 
 function updateProduct(uuid, updatedProduct) {
@@ -50,9 +66,8 @@ function updateProduct(uuid, updatedProduct) {
   if (productIndex === -1) {
     throw new ProductException("Product not found.");
   }
-
   products[productIndex] = Product.createFromObject(updatedProduct);
-  fs.writeFileSync('./app/data/products.json', JSON.stringify(products));
+  storeProductsJson(products);
 }
 
 function deleteProduct(uuid) {
@@ -61,13 +76,16 @@ function deleteProduct(uuid) {
     throw new ProductException("Product not found.");
   }
   products.splice(productIndex, 1);
-  fs.writeFileSync('./app/data/products.json', JSON.stringify(products));
+  storeProductsJson(products);
 }
 
 function findProduct(query) {
   // query is a string formatted as "<category>:<title>". If the user only enters a category, return all products in that category. If the user only enters a title, return all products with that title. If the user enters both a category and a title, return all products in that category with that title.
   if (typeof query !== "string") {
     throw new ProductException("Query must be a string.");
+  }
+  if (!query.includes(":")) {
+    return products.filter((product) => product.title === query);
   }
   const [category, title] = query.split(":");
   if (category && title) {
@@ -81,18 +99,10 @@ function findProduct(query) {
   }
 }
 
+exports.storeProductsJson = storeProductsJson;
 exports.getProducts = getProducts;
 exports.getProductById = getProductById;
 exports.createProduct = createProduct;
 exports.updateProduct = updateProduct;
 exports.deleteProduct = deleteProduct;
 exports.findProduct = findProduct;
-
-// module.exports = {
-//   getProducts,
-//   getProductById,
-//   createProduct,
-//   updateProduct,
-//   deleteProduct,
-//   findProduct
-// }

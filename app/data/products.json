@@ -1,5 +1,6 @@
-[  
+[
   {
+    "uuid": "8a20bbf5-a654-4963-a0d4-ecbb7d420160",
     "title": "Product 1",
     "description": "Product 1 description",
     "imageUrl": "https://example.com/image1.jpg",
@@ -9,21 +10,23 @@
     "category": "Category 1"
   },
   {
+    "uuid": "57e2fd97-9cdb-4595-8939-27af2a46faef",
     "title": "Product 2",
     "description": "Product 2 description",
     "imageUrl": "https://example.com/image2.jpg",
-    "unit": "kg", 
+    "unit": "kg",
     "stock": 15,
     "pricePerUnit": 7,
     "category": "Category 2"
   },
   {
-    "title": "Product 3",
-    "description": "Product 3 description",
-    "imageUrl": "https://example.com/image3.jpg",
-    "unit": "kg",
-    "stock": 20,
-    "pricePerUnit": 10,
-    "category": "Category 3"
+    "uuid": "b5c24be8-abca-418e-b440-d1faed35b964",
+    "title": "Product Y",
+    "description": "Product X description",
+    "imageUrl": "https://example.com/imag.jpg",
+    "unit": "g",
+    "stock": 1,
+    "pricePerUnit": 12,
+    "category": "Category X"
   }
 ]

@@ -6,6 +6,10 @@ class ProductException {
   constructor(errorMessage) {
     this.errorMessage = errorMessage;
   }
+
+  toString() {
+    return this.errorMessage;
+  }
 }
 
 class Product {
